@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Configuration>
+	<Controls>
+		<Control>
+			<Name>LocalGroupMemberHeader</Name>
+			<CustomControl>
+				<CustomEntries>
+					<CustomEntry>
+						<CustomItem>
+							<Frame>
+								<!--<LeftIndent>4</LeftIndent>-->
+								<CustomItem>
+									<Text>Group: </Text>
+									<ExpressionBinding>
+										<ScriptBlock>$_.GroupName</ScriptBlock>
+									</ExpressionBinding>
+									<!-- <NewLine/> -->
+								</CustomItem> 
+							</Frame>
+						</CustomItem>
+					</CustomEntry>
+				</CustomEntries>
+			</CustomControl>
+		</Control>
+	</Controls>
+	
+	<ViewDefinitions>
+		<!-- Localuser Table View -->
+		<View>
+			<Name>LocalUser</Name>
+			<ViewSelectedBy>
+				<TypeName>LocalUser</TypeName>
+			</ViewSelectedBy>
+			<TableControl>
+				<TableHeaders>
+					<TableColumnHeader>
+						<Label>Name</Label>
+						<Width>20</Width>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Label>FullName</Label>
+						<Width>30</Width>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Label>Description</Label>
+						<Width>70</Width>
+					</TableColumnHeader>
+				</TableHeaders>
+				
+				<TableRowEntries>
+					<TableRowEntry>
+						<TableColumnItems>
+							<TableColumnItem>
+								<!-- <PropertyName>Name</PropertyName> -->
+								<ScriptBlock>$_.Name[0]</ScriptBlock>
+							</TableColumnItem>
+							<TableColumnItem>
+								<ScriptBlock>$_.FullName[0]</ScriptBlock>
+							</TableColumnItem>
+							<TableColumnItem>
+								<ScriptBlock>$_.Description[0]</ScriptBlock>
+							</TableColumnItem>
+						</TableColumnItems>
+					</TableRowEntry>
+				</TableRowEntries>
+			</TableControl>
+		</View>
+		
+		<!-- LocalUser List View -->
+		<View>
+			<Name>LocalUser</Name>
+			<ViewSelectedBy>
+				<TypeName>LocalUser</TypeName>
+			</ViewSelectedBy>
+			<ListControl>
+				<ListEntries>
+					<ListEntry>
+						<ListItems>
+							<!-- Descriptive data -->
+							<ListItem>
+								<Label>Name</Label>
+								<ScriptBlock>$_.Name[0]</ScriptBlock>
+							</ListItem>
+							<ListItem>
+								<Label>FullName</Label>
+								<ScriptBlock>$_.FullName[0]</ScriptBlock>
+							</ListItem>
+							<ListItem>
+								<Label>Description</Label>
+								<ScriptBlock>$_.Description[0]</ScriptBlock>
+							</ListItem>
+							
+							<!-- Account settings -->
+							<ListItem>
+								<Label>State</Label>
+								<ScriptBlock>
+									if ($_.UserFlags[0] -BAND 2) {
+										"Disabled"
+									}
+									else {
+										"Enabled"
+									}
+								</ScriptBlock>
+							</ListItem>
+							<ListItem>
+								<Label>NeverExpirePwd</Label>
+								<ScriptBlock>
+									if ($_.UserFlags[0] -BAND 65536) {
+										$true
+									}
+									else {
+										$false
+									}
+								</ScriptBlock>
+							</ListItem>
+							<ListItem>
+								<Label>MustChangePwd</Label>
+								<ScriptBlock>
+									if (($_.PasswordExpired[0] -eq 1) -and ($_.PasswordAge[0] -eq 0)) {
+										$true
+									}
+									else {
+										$false
+									}
+								</ScriptBlock>
+							</ListItem>
+							<ListItem>
+								<Label>CantChangePwd</Label>
+								<ScriptBlock>
+									if ($_.UserFlags[0] -BAND 64) {
+										$true
+									}
+									else {
+										$false
+									}
+								</ScriptBlock>
+							</ListItem>
+							
+							<!-- Lockout stuff -->
+							<ListItem>
+								<Label>LockedOut</Label>
+								<ScriptBlock>
+									if ($_.UserFlags[0] -BAND 16) {
+										$true
+									}
+									else {
+										$false
+									}
+								</ScriptBlock>
+							</ListItem>
+							<ListItem>
+								<Label>BadPasswordAttempts</Label>
+								<ScriptBlock>$_.BadPasswordAttempts[0]</ScriptBlock>
+							</ListItem>
+							<ListItem>
+								<Label>MaxBadPasswordsAllowed</Label>
+								<ScriptBlock>$_.MaxBadPasswordsAllowed[0]</ScriptBlock>
+							</ListItem>
+							<ListItem>
+								<Label>AutoUnlockInterval</Label>
+								<ScriptBlock>$_.AutoUnlockInterval[0]</ScriptBlock>
+							</ListItem>
+							
+							<!-- Password stuff -->
+							<ListItem>
+								<Label>PwdExpired</Label>
+								<ScriptBlock>
+									if ($_.UserFlags[0] -BAND 8388608) {
+										$true
+									}
+									else {
+										$false
+									}
+								</ScriptBlock>
+							</ListItem>
+							<ListItem>
+								<Label>PasswordAge</Label>
+								<ScriptBlock>$_.PasswordAge[0]</ScriptBlock>
+							</ListItem>
+							<ListItem>
+								<Label>MaxPasswordAge</Label>
+								<ScriptBlock>$_.MaxPasswordAge[0]</ScriptBlock>
+							</ListItem>
+							<ListItem>
+								<Label>MinPasswordAge</Label>
+								<ScriptBlock>$_.MinPasswordAge[0]</ScriptBlock>
+							</ListItem>
+							<ListItem>
+								<Label>MinPasswordLength</Label>
+								<ScriptBlock>$_.MinPasswordLength[0]</ScriptBlock>
+							</ListItem>
+							<ListItem>
+								<Label>PasswordHistoryInterval</Label>
+								<ScriptBlock>$_.PasswordHistoryInterval[0]</ScriptBlock>
+							</ListItem>
+							
+							<!-- Other stuff -->
+							<ListItem>
+								<Label>LoginScript</Label>
+								<ScriptBlock>$_.LoginScript[0]</ScriptBlock>
+							</ListItem>
+							<ListItem>
+								<Label>Profile</Label>
+								<ScriptBlock>$_.Profile[0]</ScriptBlock>
+							</ListItem>
+							<ListItem>
+								<Label>HomeDirectory</Label>
+								<ScriptBlock>$_.HomeDirectory[0]</ScriptBlock>
+							</ListItem>
+							<ListItem>
+								<Label>HomeDirDrive</Label>
+								<ScriptBlock>$_.HomeDirDrive[0]</ScriptBlock>
+							</ListItem>
+						</ListItems>
+					</ListEntry>
+				</ListEntries>
+			</ListControl>
+		</View>
+		
+		<!-- LocalGroup Table View -->
+		<View>
+			<Name>LocalGroup</Name>
+			<ViewSelectedBy>
+				<TypeName>LocalGroup</TypeName>
+			</ViewSelectedBy>
+			<TableControl>
+				<TableHeaders>
+					<TableColumnHeader>
+						<Label>Name</Label>
+						<Width>30</Width>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Label>Description</Label>
+						<Width>90</Width>
+					</TableColumnHeader>
+				</TableHeaders>
+				
+				<TableRowEntries>
+					<TableRowEntry>
+						<TableColumnItems>
+							<TableColumnItem>
+								<!-- <PropertyName>Name</PropertyName> -->
+								<ScriptBlock>$_.Name[0]</ScriptBlock>
+							</TableColumnItem>
+							<TableColumnItem>
+								<ScriptBlock>$_.Description[0]</ScriptBlock>
+							</TableColumnItem>
+						</TableColumnItems>
+					</TableRowEntry>
+				</TableRowEntries>
+			</TableControl>
+		</View>
+		
+		<!-- LocalGroup List View -->
+		<View>
+			<Name>LocalGroup</Name>
+			<ViewSelectedBy>
+				<TypeName>LocalGroup</TypeName>
+			</ViewSelectedBy>
+			<ListControl>
+				<ListEntries>
+					<ListEntry>
+						<ListItems>
+							<ListItem>
+								<Label>Name</Label>
+								<ScriptBlock>$_.Name[0]</ScriptBlock>
+							</ListItem>
+							<ListItem>
+								<Label>Description</Label>
+								<ScriptBlock>$_.Description[0]</ScriptBlock>
+							</ListItem>
+						</ListItems>
+					</ListEntry>
+				</ListEntries>
+			</ListControl>
+		</View>
+		
+		<!-- LocalGroupMemberData Table View -->
+		<View>
+			<Name>LocalGroupMemberData</Name>
+			<ViewSelectedBy>
+				<TypeName>LocalGroupMemberData</TypeName>
+			</ViewSelectedBy>
+			<GroupBy>
+				<CustomControlName>LocalGroupMemberHeader</CustomControlName>
+				<PropertyName>GroupName</PropertyName>
+			</GroupBy>
+			<TableControl>
+				<TableHeaders>
+					<TableColumnHeader>
+						<Label>Name</Label>
+						<Width>20</Width>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Label>FullName</Label>
+						<Width>30</Width>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Label>Description</Label>
+						<Width>70</Width>
+					</TableColumnHeader>
+				</TableHeaders>
+				
+				<TableRowEntries>
+					<TableRowEntry>
+						<TableColumnItems>
+							<TableColumnItem>
+								<PropertyName>Name</PropertyName>
+								<!-- <ScriptBlock>$_.Name</ScriptBlock> -->
+							</TableColumnItem>
+							<TableColumnItem>
+								<PropertyName>FullName</PropertyName>
+								<!-- <ScriptBlock>$_.FullName</ScriptBlock> -->
+							</TableColumnItem>
+							<TableColumnItem>
+								<PropertyName>Description</PropertyName>
+								<!-- <ScriptBlock>$_.Description</ScriptBlock> -->
+							</TableColumnItem>
+						</TableColumnItems>
+					</TableRowEntry>
+				</TableRowEntries>
+			</TableControl>
+		</View>
+	</ViewDefinitions>
+</Configuration>
